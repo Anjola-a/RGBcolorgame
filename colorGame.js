@@ -10,7 +10,9 @@ var squares=document.querySelectorAll(".square");
 
 var reset=document.getElementById("reset");
 var modeButt=document.querySelectorAll(".mode")
-
+var streak=document.getElementById("streak");
+var streaknum=0;
+var chance=0;
 
 
 for (var i = 0; i< modeButt.length; i++) {
@@ -30,6 +32,7 @@ for (var i = 0; i< modeButt.length; i++) {
 }
 
 function again(){
+	//generate random colors
 	colors = generateRandomColors(numSqaures);
 	pickedColor= pickColor();
 	colorDisplay.textContent=pickedColor;
@@ -54,6 +57,7 @@ function again(){
 
 
 reset.addEventListener("click", function(){
+	chance=0;
 	again();
 
 })
@@ -63,6 +67,8 @@ for (var i = 0; i< squares.length; i++) {
 	//
 
 	squares[i].addEventListener("click", function(){
+		chance+=1;
+		console.log(chance);
 		var clickedColor=this.style.backgroundColor;
 		if (clickedColor===pickedColor){
 			// alert("correct!");
@@ -70,15 +76,25 @@ for (var i = 0; i< squares.length; i++) {
 			changeColors(clickedColor);
 			h1.style.backgroundColor=clickedColor;
 			reset.textContent="Play Again?";
+			if (chance==1){
+				streaknum+=1;
+				if (streaknum>=3){
+				streak.innerHTML= "<span> streak: "+streaknum +"<span><i class='fa fa-fire'></i></span></span>";
+				
+				}
+
+			}
+			
 
 		}else{
 			this.style.backgroundColor="#232323";
 			messageDisplay.textContent="Try Again";
+			streaknum=0;
 		}
 	})
 
 }
-
+//when they win change all colors to the winning color
 function changeColors(color){
 	for (var i = 0; i< squares.length; i++) {
 	squares[i].style.backgroundColor=color;
